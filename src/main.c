@@ -21,42 +21,42 @@ int main(int argc, char *argv[])
 	printf("...\n");
 
 	switch (network_init(port)) {
-		case network_error_none:
-			printf("Network initialization was successful.\n");
-			break;
-		case network_error_requesting:
-			perror("There was an error while requesting a network socket");
-			break;
-		case network_error_binding:
-			perror("There was an error while binding to the network socket");
-			break;
-		case network_error_listening:
-			perror("There was an error while listening on the network socket");
-			break;
-		default:
-			perror("There was an error while initializing the network");
-			break;
+	case network_error_none:
+		printf("Network initialization was successful.\n");
+		break;
+	case network_error_requesting:
+		perror("There was an error while requesting a network socket");
+		break;
+	case network_error_binding:
+		perror("There was an error while binding to the network socket");
+		break;
+	case network_error_listening:
+		perror("There was an error while listening on the network socket");
+		break;
+	default:
+		perror("There was an error while initializing the network");
+		break;
 	}
 
 	printf("Handling connections...\n");
 	while (running) {
 		switch(network_process()) {
-			case network_error_none:
-				// success; no need to tell the user
-				break;
-			default:
-				perror("There was an error while handling the network connection");
-				break;
+		case network_error_none:
+			// success; no need to tell the user
+			break;
+		default:
+			perror("There was an error while handling the network connection");
+			break;
 		}
 	}
 
 	switch(network_shutdown()) {
-		case network_error_none:
-			printf("Network shutdown was successful.\n");
-			break;
-		default:
-			perror("There was an error while shutting down the network");
-			break;
+	case network_error_none:
+		printf("Network shutdown was successful.\n");
+		break;
+	default:
+		perror("There was an error while shutting down the network");
+		break;
 	}
 }
 

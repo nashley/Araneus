@@ -3,21 +3,21 @@
 void process_args(int *argc, char *argv[])
 {
 	port = PORT_ANY;
-	for (int i=0; i < *argc; i++){
-		switch (argv[i][0]){
-			case '-':
-				switch (argv[i][1]) {
-					case 'h':
-						print_help(argv[0]);
-						break;
-					case 'v':
-						print_version();
-						break;
-					case 'p':
-						port = extract_arg(argv, i, 2, argc); // if the argument doesn't have a number following "-p" (e.g., "-p letters"), then the port is assigned to 0 (i.e., any available port)
-						break;
-				}
+	for (int i = 0; i < *argc; i++) {
+		switch (argv[i][0]) {
+		case '-':
+			switch (argv[i][1]) {
+			case 'h':
+				print_help(argv[0]);
 				break;
+			case 'v':
+				print_version();
+				break;
+			case 'p':
+				port = extract_arg(argv, i, 2, argc); // if the argument doesn't have a number following "-p" (e.g., "-p letters"), then the port is assigned to 0 (i.e., any available port)
+				break;
+			}
+			break;
 		}
 	}
 }
@@ -38,15 +38,15 @@ void print_version()
 }
 
 /*
-	This function is a little sketchy, but it mostly works
+	This function is a little sketchy, but it works
 */
 int extract_arg(char *s[], int i, int j, int *argc)
 {
 	//printf("s[%d]: %s\n", i, s[i]);
 	//printf("s[%d][%d]: %c\n", i, j, s[i][j]);
-	while (s[i][j] != '\0'){ // go to the end of the string
-		if (s[i][j] == ' '){ // if a space is encountered, the argument has been escaped (e.g., "-p\ 80")
-			while (s[i][j] != '\0'){
+	while (s[i][j] != '\0') { // go to the end of the string
+		if (s[i][j] == ' ') { // if a space is encountered, the argument has been escaped (e.g., "-p\ 80")
+			while (s[i][j] != '\0') {
 				if (s[i][j] != ' ') // end of whitespace
 					return strtoul(&s[i][j], NULL, 0);
 				j++;

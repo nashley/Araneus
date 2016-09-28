@@ -1,8 +1,7 @@
 #include <sys/socket.h> // for opening and connecting to network sockets
-#include <sys/types.h> // not required for Linux; may be required for BSD or embedded systems
+#include <sys/types.h> // not required for Linux; may be required for BSD or embedded systems; see man 2 bind
 #include <netinet/ip.h> // for IPPROTO_*, the socket type
 #include <unistd.h> // for closing (socket) file descriptors
-#include <stdio.h> // for printing output
 #include <stdlib.h> // for malloc/free
 
 #define BACKLOG_LIMIT 10 // the maximum number of connections sitting in the listen queue (before they're accepted)

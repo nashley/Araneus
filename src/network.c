@@ -19,7 +19,7 @@ int network_init(int port)
 
 	if (listen(sfd, BACKLOG_LIMIT) == -1)
 		return network_error_listening;
-	return 0; // no error
+	return network_error_none; // no error
 }
 
 int network_process()
@@ -37,8 +37,6 @@ int network_process()
 	int message_length = recv(remote_sfd, message_buffer, MAX_HEADER_LENGTH, 0); // receives a message from the remote: recv(socket, message, message_length, flags);
 	if (message_length == -1) // check to see if actual message_length is larger than specified message_length
 		return network_error_recieving; // error receiving from remote
-
-	printf("Received message of size %d:\n\t'%.*s'\n", message_length, message_length, (char *)message_buffer);
 
 	if (send(remote_sfd, message_buffer, message_length, 0) == -1) // send a message to the remote: send(socket, message, message_length, flags);
 		return network_error_sending; // error sending to remote

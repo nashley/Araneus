@@ -1,13 +1,16 @@
-#include <sys/socket.h> // for opening and connecting to network sockets
-#include <sys/types.h> // not required for Linux; may be required for BSD or embedded systems; see man 2 bind
-#include <netinet/ip.h> // for IPPROTO_*, the socket type
-#include <unistd.h> // for closing (socket) file descriptors
-#include <stdlib.h> // for malloc/free
+#pragma once
+
+#include <sys/socket.h>	// for opening and connecting to network sockets
+#include <sys/types.h>	// not required for Linux; may be required for BSD or embedded systems; see man 2 bind
+#include <netinet/ip.h>	// for IPPROTO_*, the socket type
+#include <unistd.h>		// for closing (socket) file descriptors
+#include <stdlib.h>		// for malloc/free
+#include <stdio.h>
 
 #define BACKLOG_LIMIT 10 // the maximum number of connections sitting in the listen queue (before they're accepted)
 #define MAX_HEADER_LENGTH 8190 // the maximum length of the header; see http://stackoverflow.com/a/6160643
 
-#define TRUE 1
+#include "parse.h"
 
 enum {
 	// generic

@@ -10,7 +10,7 @@ int network_init(int port)
 	bind_address.sin_family = AF_INET; // IPv4
 	bind_address.sin_addr.s_addr = INADDR_ANY; // Listen to any interface; can use inet_addr("127.0.0.1") to listen to specific interface instead
 
-	int on = TRUE; // turn SO_REUSEADDR on so that addresses can be reused
+	int on = 1; // turn SO_REUSEADDR on so that addresses can be reused
 	setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
 
 	if (bind(sfd, (struct sockaddr *) &bind_address, sizeof(bind_address)) == -1)
@@ -38,11 +38,18 @@ int network_process()
 	if (message_length == -1) // check to see if actual message_length is larger than specified message_length
 		return network_error_recieving; // error receiving from remote
 
-	if (send(remote_sfd, message_buffer, message_length, 0) == -1) // send a message to the remote: send(socket, message, message_length, flags);
+	char *message_buffer_return;
+	int message_length_return;
+
+	parse_http(&message_length, (char *)message_buffer, &message_length_return, message_buffer_return); // TODO make a queue
+
+	free(message_buffer);
+
+	if (send(remote_sfd, message_buffer_return, message_length_return, 0) == -1) // send a message to the remote: send(socket, message, message_length, flags);
 		return network_error_sending; // error sending to remote
 
 	close(remote_sfd); // finished talking to remote; close connection
-	free(message_buffer);
+	free(message_buffer_return);
 
 	return network_error_none;
 }

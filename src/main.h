@@ -1,3 +1,5 @@
+#pragma once
+
 #include "general.h"
 #include "network.h"
 #include "signal.h" // for capturing ctrl+c

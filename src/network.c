@@ -38,17 +38,18 @@ int network_process()
 	if (message_length == -1) // check to see if actual message_length is larger than specified message_length
 		return network_error_recieving; // error receiving from remote
 
-	char *message_buffer_return;
-	int message_length_return;
+	char **message_buffer_return = malloc(sizeof(char *));
+	off_t message_length_return = 0;
 
-	parse_http(&message_length, (char *)message_buffer, &message_length_return, message_buffer_return); // TODO make a queue
+	parse_http(message_length, (char *)message_buffer, &message_length_return, message_buffer_return); // TODO make a queue
 
 	free(message_buffer);
 
-	if (send(remote_sfd, message_buffer_return, message_length_return, 0) == -1) // send a message to the remote: send(socket, message, message_length, flags);
+	if (send(remote_sfd, *message_buffer_return, message_length_return, 0) == -1) // send a message to the remote: send(socket, message, message_length, flags);
 		return network_error_sending; // error sending to remote
 
 	close(remote_sfd); // finished talking to remote; close connection
+	free(*message_buffer_return);	
 	free(message_buffer_return);
 
 	return network_error_none;
